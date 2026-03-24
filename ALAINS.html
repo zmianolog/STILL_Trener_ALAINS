@@ -1,0 +1,1533 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Profil Kolorów — Test Preferencji Psychologicznych</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --red:    #C0392B;
+    --yellow: #D4A017;
+    --green:  #27704A;
+    --blue:   #1A4A7A;
+    --red-light:    #FAE9E7;
+    --yellow-light: #FDF6E3;
+    --green-light:  #E6F4EC;
+    --blue-light:   #E7EEF8;
+    --ink:    #1C1C1C;
+    --muted:  #6B6B6B;
+    --line:   #E2E0DB;
+    --bg:     #F9F7F4;
+    --white:  #FFFFFF;
+    --radius: 12px;
+    --shadow: 0 2px 16px rgba(0,0,0,0.07);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    background: var(--ink);
+    color: var(--white);
+    padding: 72px 24px 64px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 80% at 20% 50%, rgba(192,57,43,0.18) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 80% at 80% 50%, rgba(26,74,122,0.22) 0%, transparent 60%);
+  }
+  .hero-dots {
+    position: absolute;
+    top: 32px; right: 40px;
+    display: flex; gap: 10px;
+  }
+  .hero-dot {
+    width: 14px; height: 14px;
+    border-radius: 50%;
+  }
+  .hero-dot.r { background: var(--red); }
+  .hero-dot.y { background: var(--yellow); }
+  .hero-dot.g { background: var(--green); }
+  .hero-dot.b { background: var(--blue); }
+
+  .hero-label {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.5);
+    margin-bottom: 20px;
+    position: relative;
+  }
+  .hero h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(38px, 6vw, 68px);
+    font-weight: 300;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    position: relative;
+    margin-bottom: 20px;
+  }
+  .hero h1 em {
+    font-style: italic;
+    color: rgba(255,255,255,0.65);
+  }
+  .hero-sub {
+    font-size: 15px;
+    color: rgba(255,255,255,0.55);
+    max-width: 480px;
+    margin: 0 auto;
+    position: relative;
+  }
+
+  /* ── COLOR LEGEND ── */
+  .legend {
+    display: flex;
+    justify-content: center;
+    gap: 0;
+    flex-wrap: wrap;
+    border-bottom: 1px solid var(--line);
+    background: var(--white);
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 18px 28px;
+    border-right: 1px solid var(--line);
+    flex: 1;
+    min-width: 160px;
+  }
+  .legend-item:last-child { border-right: none; }
+  .legend-dot {
+    width: 12px; height: 12px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .legend-text strong {
+    display: block;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--ink);
+  }
+  .legend-text span {
+    font-size: 11px;
+    color: var(--muted);
+    font-style: italic;
+  }
+
+  /* ── INSTRUCTIONS ── */
+  .instructions {
+    max-width: 720px;
+    margin: 48px auto 0;
+    padding: 0 24px;
+  }
+  .instructions-card {
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 32px 36px;
+  }
+  .instructions-card h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 14px;
+  }
+  .instructions-card p {
+    font-size: 14px;
+    color: var(--muted);
+    margin-bottom: 10px;
+  }
+  .instructions-card p:last-child { margin-bottom: 0; }
+
+  /* ── SCALE LEGEND ── */
+  .scale-legend {
+    display: flex;
+    gap: 0;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    overflow: hidden;
+    margin-top: 20px;
+    font-size: 12px;
+  }
+  .scale-legend-item {
+    flex: 1;
+    padding: 10px 8px;
+    text-align: center;
+    border-right: 1px solid var(--line);
+    background: var(--bg);
+  }
+  .scale-legend-item:last-child { border-right: none; }
+  .scale-legend-item .num {
+    font-weight: 500;
+    font-size: 16px;
+    display: block;
+    margin-bottom: 2px;
+    color: var(--ink);
+  }
+  .scale-legend-item .lbl {
+    color: var(--muted);
+    font-size: 10px;
+    line-height: 1.3;
+  }
+
+  /* ── FORM ── */
+  .form-wrap {
+    max-width: 720px;
+    margin: 32px auto 48px;
+    padding: 0 24px;
+  }
+
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 40px 0 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .statement-card {
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 24px 28px;
+    margin-bottom: 12px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    position: relative;
+  }
+  .statement-card:hover {
+    border-color: #ccc;
+    box-shadow: var(--shadow);
+  }
+  .statement-card.answered {
+    border-left: 3px solid var(--ink);
+  }
+  .statement-card.answered.color-R { border-left-color: var(--red); }
+  .statement-card.answered.color-Y { border-left-color: var(--yellow); }
+  .statement-card.answered.color-G { border-left-color: var(--green); }
+  .statement-card.answered.color-B { border-left-color: var(--blue); }
+
+  .statement-number {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+  .statement-text {
+    font-size: 15px;
+    font-weight: 300;
+    color: var(--ink);
+    margin-bottom: 20px;
+    line-height: 1.5;
+  }
+
+  .likert {
+    display: flex;
+    gap: 8px;
+    align-items: stretch;
+  }
+  .likert input[type="radio"] { display: none; }
+  .likert label {
+    flex: 1;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+  }
+  .likert label .btn {
+    width: 100%;
+    height: 40px;
+    border: 1.5px solid var(--line);
+    border-radius: 8px;
+    background: var(--bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    font-weight: 400;
+    color: var(--muted);
+    transition: all 0.15s;
+  }
+  .likert label:hover .btn {
+    border-color: #aaa;
+    background: #efefed;
+    color: var(--ink);
+  }
+  .likert input[type="radio"]:checked + label .btn {
+    background: var(--ink);
+    border-color: var(--ink);
+    color: var(--white);
+    font-weight: 500;
+  }
+  .likert label .lbl-txt {
+    font-size: 9px;
+    color: var(--muted);
+    text-align: center;
+    line-height: 1.2;
+    max-width: 60px;
+  }
+
+  /* ── PROGRESS ── */
+  .progress-wrap {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--white);
+    border-bottom: 1px solid var(--line);
+    padding: 12px 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .progress-bar-bg {
+    flex: 1;
+    height: 4px;
+    background: var(--line);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .progress-bar-fill {
+    height: 100%;
+    background: var(--ink);
+    border-radius: 2px;
+    transition: width 0.3s ease;
+    width: 0%;
+  }
+  .progress-label {
+    font-size: 12px;
+    color: var(--muted);
+    white-space: nowrap;
+    min-width: 60px;
+    text-align: right;
+  }
+
+  /* ── SUBMIT ── */
+  .submit-wrap {
+    max-width: 720px;
+    margin: 0 auto 80px;
+    padding: 0 24px;
+    text-align: center;
+  }
+  .submit-note {
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 20px;
+    font-style: italic;
+  }
+  .btn-submit {
+    background: var(--ink);
+    color: var(--white);
+    border: none;
+    padding: 16px 56px;
+    font-size: 14px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn-submit:hover {
+    background: #333;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+  }
+  .btn-submit:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
+  .answer-count {
+    font-size: 13px;
+    color: var(--muted);
+    margin-top: 12px;
+  }
+  .answer-count strong {
+    color: var(--ink);
+  }
+
+  /* ── RESULTS ── */
+  #results {
+    display: none;
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 48px 24px 80px;
+    animation: fadeUp 0.6s ease;
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .result-hero {
+    background: var(--ink);
+    border-radius: var(--radius);
+    padding: 48px 40px;
+    color: var(--white);
+    margin-bottom: 28px;
+    position: relative;
+    overflow: hidden;
+  }
+  .result-hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    opacity: 0.15;
+  }
+  .result-eyebrow {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.5);
+    margin-bottom: 12px;
+  }
+  .result-type-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(32px, 5vw, 52px);
+    font-weight: 300;
+    line-height: 1.1;
+    margin-bottom: 8px;
+  }
+  .result-type-name em {
+    font-style: italic;
+    color: rgba(255,255,255,0.65);
+  }
+  .result-tagline {
+    font-size: 15px;
+    color: rgba(255,255,255,0.6);
+    font-style: italic;
+    margin-bottom: 32px;
+  }
+
+  /* color swatches */
+  .result-swatches {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .swatch {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 6px;
+    padding: 8px 14px;
+    font-size: 13px;
+  }
+  .swatch-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+  }
+
+  /* score bars */
+  .score-bars {
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 28px 32px;
+    margin-bottom: 20px;
+  }
+  .score-bars h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 20px;
+  }
+  .score-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 14px;
+  }
+  .score-row:last-child { margin-bottom: 0; }
+  .score-color-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 130px;
+    flex-shrink: 0;
+  }
+  .score-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .score-color-name {
+    font-size: 13px;
+    font-weight: 400;
+  }
+  .score-bar-bg {
+    flex: 1;
+    height: 8px;
+    background: var(--bg);
+    border-radius: 4px;
+    overflow: hidden;
+    border: 1px solid var(--line);
+  }
+  .score-bar-fill {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 1s ease;
+  }
+  .score-pct {
+    font-size: 13px;
+    font-weight: 500;
+    width: 36px;
+    text-align: right;
+    color: var(--ink);
+  }
+
+  /* profile sections */
+  .profile-section {
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 28px 32px;
+    margin-bottom: 16px;
+  }
+  .profile-section h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .profile-section h3 span {
+    font-size: 11px;
+    font-weight: 400;
+    font-family: 'DM Sans', sans-serif;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 3px 8px;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+  }
+  .profile-section p {
+    font-size: 14px;
+    color: #3a3a3a;
+    line-height: 1.75;
+    margin-bottom: 12px;
+  }
+  .profile-section p:last-child { margin-bottom: 0; }
+
+  .tags-wrap {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 16px;
+  }
+  .tag {
+    font-size: 12px;
+    padding: 5px 12px;
+    border-radius: 20px;
+    border: 1px solid var(--line);
+    color: var(--ink);
+    background: var(--bg);
+    font-weight: 400;
+  }
+
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-top: 12px;
+  }
+  .two-col-item {
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 12px 14px;
+    font-size: 13px;
+    color: var(--ink);
+  }
+  .two-col-item strong {
+    display: block;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 4px;
+  }
+
+  .retake-btn {
+    display: block;
+    width: 100%;
+    margin-top: 28px;
+    padding: 14px;
+    background: transparent;
+    border: 1.5px solid var(--line);
+    border-radius: 8px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 0.05em;
+  }
+  .retake-btn:hover {
+    border-color: var(--ink);
+    color: var(--ink);
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 540px) {
+    .legend-item { min-width: 50%; }
+    .likert label .lbl-txt { display: none; }
+    .two-col { grid-template-columns: 1fr; }
+    .result-hero { padding: 32px 24px; }
+    .profile-section { padding: 22px 20px; }
+    .score-bars { padding: 22px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-dots">
+    <div class="hero-dot r"></div>
+    <div class="hero-dot y"></div>
+    <div class="hero-dot g"></div>
+    <div class="hero-dot b"></div>
+  </div>
+  <p class="hero-label">Preferencje Psychologiczne</p>
+  <h1>Odkryj swój<br><em>Profil Kolorów</em></h1>
+  <p class="hero-sub">32-twierdzeniowy test preferencji behawioralnych oparty na modelu czterech energii</p>
+</header>
+
+<!-- LEGEND -->
+<div class="legend">
+  <div class="legend-item">
+    <div class="legend-dot" style="background:var(--red)"></div>
+    <div class="legend-text">
+      <strong>Czerwony</strong>
+      <span>Fiery Red · Akcja</span>
+    </div>
+  </div>
+  <div class="legend-item">
+    <div class="legend-dot" style="background:var(--yellow)"></div>
+    <div class="legend-text">
+      <strong>Żółty</strong>
+      <span>Sunshine Yellow · Ekspresja</span>
+    </div>
+  </div>
+  <div class="legend-item">
+    <div class="legend-dot" style="background:var(--green)"></div>
+    <div class="legend-text">
+      <strong>Zielony</strong>
+      <span>Earth Green · Harmonia</span>
+    </div>
+  </div>
+  <div class="legend-item">
+    <div class="legend-dot" style="background:var(--blue)"></div>
+    <div class="legend-text">
+      <strong>Niebieski</strong>
+      <span>Cool Blue · Precyzja</span>
+    </div>
+  </div>
+</div>
+
+<!-- PROGRESS BAR -->
+<div class="progress-wrap">
+  <div class="progress-bar-bg">
+    <div class="progress-bar-fill" id="progressFill"></div>
+  </div>
+  <div class="progress-label" id="progressLabel">0 / 32</div>
+</div>
+
+<!-- INSTRUCTIONS -->
+<div class="instructions">
+  <div class="instructions-card">
+    <h2>Jak wypełnić test?</h2>
+    <p>Przeczytaj każde twierdzenie i oceń, <strong>na ile trafnie opisuje Twoje typowe zachowanie lub przekonanie</strong> — nie to, jak chciałbyś się zachowywać, lecz jak faktycznie funkcjonujesz na co dzień.</p>
+    <p>Nie ma odpowiedzi dobrych ani złych. Każdy profil kolorów wnosi unikalną wartość.</p>
+    <div class="scale-legend">
+      <div class="scale-legend-item"><span class="num">1</span><span class="lbl">Zdecydowanie nie</span></div>
+      <div class="scale-legend-item"><span class="num">2</span><span class="lbl">Raczej nie</span></div>
+      <div class="scale-legend-item"><span class="num">3</span><span class="lbl">Trudno powiedzieć</span></div>
+      <div class="scale-legend-item"><span class="num">4</span><span class="lbl">Raczej tak</span></div>
+      <div class="scale-legend-item"><span class="num">5</span><span class="lbl">Zdecydowanie tak</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- FORM -->
+<div class="form-wrap">
+  <form id="testForm">
+
+    <div class="section-title">Część I — Działanie i decyzje</div>
+
+    <!-- 1 R -->
+    <div class="statement-card" id="card-1" data-color="R">
+      <div class="statement-number">01 / 32</div>
+      <div class="statement-text">Lubię działać szybko i podejmować decyzje bez nadmiernego wahania.</div>
+      <div class="likert">
+        <input type="radio" name="q1" id="q1_1" value="1"><label for="q1_1"><div class="btn">1</div><div class="lbl-txt">Zdecydowanie nie</div></label>
+        <input type="radio" name="q1" id="q1_2" value="2"><label for="q1_2"><div class="btn">2</div><div class="lbl-txt">Raczej nie</div></label>
+        <input type="radio" name="q1" id="q1_3" value="3"><label for="q1_3"><div class="btn">3</div><div class="lbl-txt">Trudno powiedzieć</div></label>
+        <input type="radio" name="q1" id="q1_4" value="4"><label for="q1_4"><div class="btn">4</div><div class="lbl-txt">Raczej tak</div></label>
+        <input type="radio" name="q1" id="q1_5" value="5"><label for="q1_5"><div class="btn">5</div><div class="lbl-txt">Zdecydowanie tak</div></label>
+      </div>
+    </div>
+
+    <!-- 2 B -->
+    <div class="statement-card" id="card-2" data-color="B">
+      <div class="statement-number">02 / 32</div>
+      <div class="statement-text">Przed podjęciem ważnej decyzji dokładnie analizuję dostępne dane i fakty.</div>
+      <div class="likert">
+        <input type="radio" name="q2" id="q2_1" value="1"><label for="q2_1"><div class="btn">1</div><div class="lbl-txt">Zdecydowanie nie</div></label>
+        <input type="radio" name="q2" id="q2_2" value="2"><label for="q2_2"><div class="btn">2</div><div class="lbl-txt">Raczej nie</div></label>
+        <input type="radio" name="q2" id="q2_3" value="3"><label for="q2_3"><div class="btn">3</div><div class="lbl-txt">Trudno powiedzieć</div></label>
+        <input type="radio" name="q2" id="q2_4" value="4"><label for="q2_4"><div class="btn">4</div><div class="lbl-txt">Raczej tak</div></label>
+        <input type="radio" name="q2" id="q2_5" value="5"><label for="q2_5"><div class="btn">5</div><div class="lbl-txt">Zdecydowanie tak</div></label>
+      </div>
+    </div>
+
+    <!-- 3 Y -->
+    <div class="statement-card" id="card-3" data-color="Y">
+      <div class="statement-number">03 / 32</div>
+      <div class="statement-text">Chętnie dzielę się pomysłami i entuzjazm innych działa na mnie motywująco.</div>
+      <div class="likert">
+        <input type="radio" name="q3" id="q3_1" value="1"><label for="q3_1"><div class="btn">1</div><div class="lbl-txt">Zdecydowanie nie</div></label>
+        <input type="radio" name="q3" id="q3_2" value="2"><label for="q3_2"><div class="btn">2</div><div class="lbl-txt">Raczej nie</div></label>
+        <input type="radio" name="q3" id="q3_3" value="3"><label for="q3_3"><div class="btn">3</div><div class="lbl-txt">Trudno powiedzieć</div></label>
+        <input type="radio" name="q3" id="q3_4" value="4"><label for="q3_4"><div class="btn">4</div><div class="lbl-txt">Raczej tak</div></label>
+        <input type="radio" name="q3" id="q3_5" value="5"><label for="q3_5"><div class="btn">5</div><div class="lbl-txt">Zdecydowanie tak</div></label>
+      </div>
+    </div>
+
+    <!-- 4 G -->
+    <div class="statement-card" id="card-4" data-color="G">
+      <div class="statement-number">04 / 32</div>
+      <div class="statement-text">Konflikty w zespole mocno mnie stresują — staram się je łagodzić, zanim eskalują.</div>
+      <div class="likert">
+        <input type="radio" name="q4" id="q4_1" value="1"><label for="q4_1"><div class="btn">1</div><div class="lbl-txt">Zdecydowanie nie</div></label>
+        <input type="radio" name="q4" id="q4_2" value="2"><label for="q4_2"><div class="btn">2</div><div class="lbl-txt">Raczej nie</div></label>
+        <input type="radio" name="q4" id="q4_3" value="3"><label for="q4_3"><div class="btn">3</div><div class="lbl-txt">Trudno powiedzieć</div></label>
+        <input type="radio" name="q4" id="q4_4" value="4"><label for="q4_4"><div class="btn">4</div><div class="lbl-txt">Raczej tak</div></label>
+        <input type="radio" name="q4" id="q4_5" value="5"><label for="q4_5"><div class="btn">5</div><div class="lbl-txt">Zdecydowanie tak</div></label>
+      </div>
+    </div>
+
+    <!-- 5 R -->
+    <div class="statement-card" id="card-5" data-color="R">
+      <div class="statement-number">05 / 32</div>
+      <div class="statement-text">Wolę przejąć inicjatywę, niż czekać na wskazówki od innych.</div>
+      <div class="likert">
+        <input type="radio" name="q5" id="q5_1" value="1"><label for="q5_1"><div class="btn">1</div><div class="lbl-txt">Zdecydowanie nie</div></label>
+        <input type="radio" name="q5" id="q5_2" value="2"><label for="q5_2"><div class="btn">2</div><div class="lbl-txt">Raczej nie</div></label>
+        <input type="radio" name="q5" id="q5_3" value="3"><label for="q5_3"><div class="btn">3</div><div class="lbl-txt">Trudno powiedzieć</div></label>
+        <input type="radio" name="q5" id="q5_4" value="4"><label for="q5_4"><div class="btn">4</div><div class="lbl-txt">Raczej tak</div></label>
+        <input type="radio" name="q5" id="q5_5" value="5"><label for="q5_5"><div class="btn">5</div><div class="lbl-txt">Zdecydowanie tak</div></label>
+      </div>
+    </div>
+
+    <!-- 6 B -->
+    <div class="statement-card" id="card-6" data-color="B">
+      <div class="statement-number">06 / 32</div>
+      <div class="statement-text">Błędy wynikające z niedostatecznego sprawdzenia szczegółów są dla mnie trudne do zaakceptowania.</div>
+      <div class="likert">
+        <input type="radio" name="q6" id="q6_1" value="1"><label for="q6_1"><div class="btn">1</div><div class="lbl-txt">Zdecydowanie nie</div></label>
+        <input type="radio" name="q6" id="q6_2" value="2"><label for="q6_2"><div class="btn">2</div><div class="lbl-txt">Raczej nie</div></label>
+        <input type="radio" name="q6" id="q6_3" value="3"><label for="q6_3"><div class="btn">3</div><div class="lbl-txt">Trudno powiedzieć</div></label>
+        <input type="radio" name="q6" id="q6_4" value="4"><label for="q6_4"><div class="btn">4</div><div class="lbl-txt">Raczej tak</div></label>
+        <input type="radio" name="q6" id="q6_5" value="5"><label for="q6_5"><div class="btn">5</div><div class="lbl-txt">Zdecydowanie tak</div></label>
+      </div>
+    </div>
+
+    <!-- 7 G -->
+    <div class="statement-card" id="card-7" data-color="G">
+      <div class="statement-number">07 / 32</div>
+      <div class="statement-text">Lojalność wobec współpracowników i utrzymanie dobrych relacji to dla mnie priorytet.</div>
+      <div class="likert">
+        <input type="radio" name="q7" id="q7_1" value="1"><label for="q7_1"><div class="btn">1</div><div class="lbl-txt">Zdecydowanie nie</div></label>
+        <input type="radio" name="q7" id="q7_2" value="2"><label for="q7_2"><div class="btn">2</div><div class="lbl-txt">Raczej nie</div></label>
+        <input type="radio" name="q7" id="q7_3" value="3"><label for="q7_3"><div class="btn">3</div><div class="lbl-txt">Trudno powiedzieć</div></label>
+        <input type="radio" name="q7" id="q7_4" value="4"><label for="q7_4"><div class="btn">4</div><div class="lbl-txt">Raczej tak</div></label>
+        <input type="radio" name="q7" id="q7_5" value="5"><label for="q7_5"><div class="btn">5</div><div class="lbl-txt">Zdecydowanie tak</div></label>
+      </div>
+    </div>
+
+    <!-- 8 Y -->
+    <div class="statement-card" id="card-8" data-color="Y">
+      <div class="statement-number">08 / 32</div>
+      <div class="statement-text">W nowym towarzystwie dość szybko nawiązuję kontakt i czuję się swobodnie.</div>
+      <div class="likert">
+        <input type="radio" name="q8" id="q8_1" value="1"><label for="q8_1"><div class="btn">1</div><div class="lbl-txt">Zdecydowanie nie</div></label>
+        <input type="radio" name="q8" id="q8_2" value="2"><label for="q8_2"><div class="btn">2</div><div class="lbl-txt">Raczej nie</div></label>
+        <input type="radio" name="q8" id="q8_3" value="3"><label for="q8_3"><div class="btn">3</div><div class="lbl-txt">Trudno powiedzieć</div></label>
+        <input type="radio" name="q8" id="q8_4" value="4"><label for="q8_4"><div class="btn">4</div><div class="lbl-txt">Raczej tak</div></label>
+        <input type="radio" name="q8" id="q8_5" value="5"><label for="q8_5"><div class="btn">5</div><div class="lbl-txt">Zdecydowanie tak</div></label>
+      </div>
+    </div>
+
+    <div class="section-title">Część II — Praca i organizacja</div>
+
+    <!-- 9 R -->
+    <div class="statement-card" id="card-9" data-color="R">
+      <div class="statement-number">09 / 32</div>
+      <div class="statement-text">Presja i wyzwania motywują mnie do lepszej pracy, a nie paraliżują.</div>
+      <div class="likert">
+        <input type="radio" name="q9" id="q9_1" value="1"><label for="q9_1"><div class="btn">1</div><div class="lbl-txt">Zdecydowanie nie</div></label>
+        <input type="radio" name="q9" id="q9_2" value="2"><label for="q9_2"><div class="btn">2</div><div class="lbl-txt">Raczej nie</div></label>
+        <input type="radio" name="q9" id="q9_3" value="3"><label for="q9_3"><div class="btn">3</div><div class="lbl-txt">Trudno powiedzieć</div></label>
+        <input type="radio" name="q9" id="q9_4" value="4"><label for="q9_4"><div class="btn">4</div><div class="lbl-txt">Raczej tak</div></label>
+        <input type="radio" name="q9" id="q9_5" value="5"><label for="q9_5"><div class="btn">5</div><div class="lbl-txt">Zdecydowanie tak</div></label>
+      </div>
+    </div>
+
+    <!-- 10 B -->
+    <div class="statement-card" id="card-10" data-color="B">
+      <div class="statement-number">10 / 32</div>
+      <div class="statement-text">Wolę mieć jasno zdefiniowane cele i procedury niż działać w chaosie organizacyjnym.</div>
+      <div class="likert">
+        <input type="radio" name="q10" id="q10_1" value="1"><label for="q10_1"><div class="btn">1</div><div class="lbl-txt">Zdecydowanie nie</div></label>
+        <input type="radio" name="q10" id="q10_2" value="2"><label for="q10_2"><div class="btn">2</div><div class="lbl-txt">Raczej nie</div></label>
+        <input type="radio" name="q10" id="q10_3" value="3"><label for="q10_3"><div class="btn">3</div><div class="lbl-txt">Trudno powiedzieć</div></label>
+        <input type="radio" name="q10" id="q10_4" value="4"><label for="q10_4"><div class="btn">4</div><div class="lbl-txt">Raczej tak</div></label>
+        <input type="radio" name="q10" id="q10_5" value="5"><label for="q10_5"><div class="btn">5</div><div class="lbl-txt">Zdecydowanie tak</div></label>
+      </div>
+    </div>
+
+    <!-- 11 Y -->
+    <div class="statement-card" id="card-11" data-color="Y">
+      <div class="statement-number">11 / 32</div>
+      <div class="statement-text">Pracuję najlepiej, gdy mogę wyrażać kreatywność i nie jestem ograniczony sztywnym planem działań.</div>
+      <div class="likert">
+        <input type="radio" name="q11" id="q11_1" value="1"><label for="q11_1"><div class="btn">1</div><div class="lbl-txt">Zdecydowanie nie</div></label>
+        <input type="radio" name="q11" id="q11_2" value="2"><label for="q11_2"><div class="btn">2</div><div class="lbl-txt">Raczej nie</div></label>
+        <input type="radio" name="q11" id="q11_3" value="3"><label for="q11_3"><div class="btn">3</div><div class="lbl-txt">Trudno powiedzieć</div></label>
+        <input type="radio" name="q11" id="q11_4" value="4"><label for="q11_4"><div class="btn">4</div><div class="lbl-txt">Raczej tak</div></label>
+        <input type="radio" name="q11" id="q11_5" value="5"><label for="q11_5"><div class="btn">5</div><div class="lbl-txt">Zdecydowanie tak</div></label>
+      </div>
+    </div>
+
+    <!-- 12 G -->
+    <div class="statement-card" id="card-12" data-color="G">
+      <div class="statement-number">12 / 32</div>
+      <div class="statement-text">Wolę, by zmiany wprowadzane były stopniowo i z uwzględnieniem zdania wszystkich zainteresowanych stron.</div>
+      <div class="likert">
+        <input type="radio" name="q12" id="q12_1" value="1"><label for="q12_1"><div class="btn">1</div><div class="lbl-txt">Zdecydowanie nie</div></label>
+        <input type="radio" name="q12" id="q12_2" value="2"><label for="q12_2"><div class="btn">2</div><div class="lbl-txt">Raczej nie</div></label>
+        <input type="radio" name="q12" id="q12_3" value="3"><label for="q12_3"><div class="btn">3</div><div class="lbl-txt">Trudno powiedzieć</div></label>
+        <input type="radio" name="q12" id="q12_4" value="4"><label for="q12_4"><div class="btn">4</div><div class="lbl-txt">Raczej tak</div></label>
+        <input type="radio" name="q12" id="q12_5" value="5"><label for="q12_5"><div class="btn">5</div><div class="lbl-txt">Zdecydowanie tak</div></label>
+      </div>
+    </div>
+
+    <!-- 13 R -->
+    <div class="statement-card" id="card-13" data-color="R">
+      <div class="statement-number">13 / 32</div>
+      <div class="statement-text">Wyniki i efekty końcowe są dla mnie ważniejsze niż sam proces dochodzenia do celu.</div>
+      <div class="likert">
+        <input type="radio" name="q13" id="q13_1" value="1"><label for="q13_1"><div class="btn">1</div><div class="lbl-txt">Zdecydowanie nie</div></label>
+        <input type="radio" name="q13" id="q13_2" value="2"><label for="q13_2"><div class="btn">2</div><div class="lbl-txt">Raczej nie</div></label>
+        <input type="radio" name="q13" id="q13_3" value="3"><label for="q13_3"><div class="btn">3</div><div class="lbl-txt">Trudno powiedzieć</div></label>
+        <input type="radio" name="q13" id="q13_4" value="4"><label for="q13_4"><div class="btn">4</div><div class="lbl-txt">Raczej tak</div></label>
+        <input type="radio" name="q13" id="q13_5" value="5"><label for="q13_5"><div class="btn">5</div><div class="lbl-txt">Zdecydowanie tak</div></label>
+      </div>
+    </div>
+
+    <!-- 14 B -->
+    <div class="statement-card" id="card-14" data-color="B">
+      <div class="statement-number">14 / 32</div>
+      <div class="statement-text">Lubię dokładnie zaplanować pracę zanim zacznę działać — improwizacja mi nie odpowiada.</div>
+      <div class="likert">
+        <input type="radio" name="q14" id="q14_1" value="1"><label for="q14_1"><div class="btn">1</div><div class="lbl-txt">Zdecydowanie nie</div></label>
+        <input type="radio" name="q14" id="q14_2" value="2"><label for="q14_2"><div class="btn">2</div><div class="lbl-txt">Raczej nie</div></label>
+        <input type="radio" name="q14" id="q14_3" value="3"><label for="q14_3"><div class="btn">3</div><div class="lbl-txt">Trudno powiedzieć</div></label>
+        <input type="radio" name="q14" id="q14_4" value="4"><label for="q14_4"><div class="btn">4</div><div class="lbl-txt">Raczej tak</div></label>
+        <input type="radio" name="q14" id="q14_5" value="5"><label for="q14_5"><div class="btn">5</div><div class="lbl-txt">Zdecydowanie tak</div></label>
+      </div>
+    </div>
+
+    <!-- 15 Y -->
+    <div class="statement-card" id="card-15" data-color="Y">
+      <div class="statement-number">15 / 32</div>
+      <div class="statement-text">Chętnie prezentuję pomysły publicznie — mówienie przed grupą sprawia mi przyjemność.</div>
+      <div class="likert">
+        <input type="radio" name="q15" id="q15_1" value="1"><label for="q15_1"><div class="btn">1</div><div class="lbl-txt">Zdecydowanie nie</div></label>
+        <input type="radio" name="q15" id="q15_2" value="2"><label for="q15_2"><div class="btn">2</div><div class="lbl-txt">Raczej nie</div></label>
+        <input type="radio" name="q15" id="q15_3" value="3"><label for="q15_3"><div class="btn">3</div><div class="lbl-txt">Trudno powiedzieć</div></label>
+        <input type="radio" name="q15" id="q15_4" value="4"><label for="q15_4"><div class="btn">4</div><div class="lbl-txt">Raczej tak</div></label>
+        <input type="radio" name="q15" id="q15_5" value="5"><label for="q15_5"><div class="btn">5</div><div class="lbl-txt">Zdecydowanie tak</div></label>
+      </div>
+    </div>
+
+    <!-- 16 G -->
+    <div class="statement-card" id="card-16" data-color="G">
+      <div class="statement-number">16 / 32</div>
+      <div class="statement-text">Kiedy ktoś zwraca się do mnie z problemem, najpierw słucham, a dopiero potem doradzam.</div>
+      <div class="likert">
+        <input type="radio" name="q16" id="q16_1" value="1"><label for="q16_1"><div class="btn">1</div><div class="lbl-txt">Zdecydowanie nie</div></label>
+        <input type="radio" name="q16" id="q16_2" value="2"><label for="q16_2"><div class="btn">2</div><div class="lbl-txt">Raczej nie</div></label>
+        <input type="radio" name="q16" id="q16_3" value="3"><label for="q16_3"><div class="btn">3</div><div class="lbl-txt">Trudno powiedzieć</div></label>
+        <input type="radio" name="q16" id="q16_4" value="4"><label for="q16_4"><div class="btn">4</div><div class="lbl-txt">Raczej tak</div></label>
+        <input type="radio" name="q16" id="q16_5" value="5"><label for="q16_5"><div class="btn">5</div><div class="lbl-txt">Zdecydowanie tak</div></label>
+      </div>
+    </div>
+
+    <div class="section-title">Część III — Relacje i komunikacja</div>
+
+    <!-- 17 Y -->
+    <div class="statement-card" id="card-17" data-color="Y">
+      <div class="statement-number">17 / 32</div>
+      <div class="statement-text">Moja energia i optymizm są zauważane przez innych — potrafię "zarazić" otoczenie entuzjazmem.</div>
+      <div class="likert">
+        <input type="radio" name="q17" id="q17_1" value="1"><label for="q17_1"><div class="btn">1</div><div class="lbl-txt">Zdecydowanie nie</div></label>
+        <input type="radio" name="q17" id="q17_2" value="2"><label for="q17_2"><div class="btn">2</div><div class="lbl-txt">Raczej nie</div></label>
+        <input type="radio" name="q17" id="q17_3" value="3"><label for="q17_3"><div class="btn">3</div><div class="lbl-txt">Trudno powiedzieć</div></label>
+        <input type="radio" name="q17" id="q17_4" value="4"><label for="q17_4"><div class="btn">4</div><div class="lbl-txt">Raczej tak</div></label>
+        <input type="radio" name="q17" id="q17_5" value="5"><label for="q17_5"><div class="btn">5</div><div class="lbl-txt">Zdecydowanie tak</div></label>
+      </div>
+    </div>
+
+    <!-- 18 R -->
+    <div class="statement-card" id="card-18" data-color="R">
+      <div class="statement-number">18 / 32</div>
+      <div class="statement-text">Mówię wprost, co myślę — dyplomatyczne owijanie w bawełnę uważam za stratę czasu.</div>
+      <div class="likert">
+        <input type="radio" name="q18" id="q18_1" value="1"><label for="q18_1"><div class="btn">1</div><div class="lbl-txt">Zdecydowanie nie</div></label>
+        <input type="radio" name="q18" id="q18_2" value="2"><label for="q18_2"><div class="btn">2</div><div class="lbl-txt">Raczej nie</div></label>
+        <input type="radio" name="q18" id="q18_3" value="3"><label for="q18_3"><div class="btn">3</div><div class="lbl-txt">Trudno powiedzieć</div></label>
+        <input type="radio" name="q18" id="q18_4" value="4"><label for="q18_4"><div class="btn">4</div><div class="lbl-txt">Raczej tak</div></label>
+        <input type="radio" name="q18" id="q18_5" value="5"><label for="q18_5"><div class="btn">5</div><div class="lbl-txt">Zdecydowanie tak</div></label>
+      </div>
+    </div>
+
+    <!-- 19 B -->
+    <div class="statement-card" id="card-19" data-color="B">
+      <div class="statement-number">19 / 32</div>
+      <div class="statement-text">W dyskusjach opieram się na argumentach i faktach, nie na emocjach czy przeczuciach.</div>
+      <div class="likert">
+        <input type="radio" name="q19" id="q19_1" value="1"><label for="q19_1"><div class="btn">1</div><div class="lbl-txt">Zdecydowanie nie</div></label>
+        <input type="radio" name="q19" id="q19_2" value="2"><label for="q19_2"><div class="btn">2</div><div class="lbl-txt">Raczej nie</div></label>
+        <input type="radio" name="q19" id="q19_3" value="3"><label for="q19_3"><div class="btn">3</div><div class="lbl-txt">Trudno powiedzieć</div></label>
+        <input type="radio" name="q19" id="q19_4" value="4"><label for="q19_4"><div class="btn">4</div><div class="lbl-txt">Raczej tak</div></label>
+        <input type="radio" name="q19" id="q19_5" value="5"><label for="q19_5"><div class="btn">5</div><div class="lbl-txt">Zdecydowanie tak</div></label>
+      </div>
+    </div>
+
+    <!-- 20 G -->
+    <div class="statement-card" id="card-20" data-color="G">
+      <div class="statement-number">20 / 32</div>
+      <div class="statement-text">Doceniam, gdy środowisko pracy jest stabilne i przewidywalne — nagłe zmiany mnie demobilizują.</div>
+      <div class="likert">
+        <input type="radio" name="q20" id="q20_1" value="1"><label for="q20_1"><div class="btn">1</div><div class="lbl-txt">Zdecydowanie nie</div></label>
+        <input type="radio" name="q20" id="q20_2" value="2"><label for="q20_2"><div class="btn">2</div><div class="lbl-txt">Raczej nie</div></label>
+        <input type="radio" name="q20" id="q20_3" value="3"><label for="q20_3"><div class="btn">3</div><div class="lbl-txt">Trudno powiedzieć</div></label>
+        <input type="radio" name="q20" id="q20_4" value="4"><label for="q20_4"><div class="btn">4</div><div class="lbl-txt">Raczej tak</div></label>
+        <input type="radio" name="q20" id="q20_5" value="5"><label for="q20_5"><div class="btn">5</div><div class="lbl-txt">Zdecydowanie tak</div></label>
+      </div>
+    </div>
+
+    <!-- 21 Y -->
+    <div class="statement-card" id="card-21" data-color="Y">
+      <div class="statement-number">21 / 32</div>
+      <div class="statement-text">Spontaniczne wyjście ze znajomymi cenię bardziej niż starannie zaplanowane spotkanie.</div>
+      <div class="likert">
+        <input type="radio" name="q21" id="q21_1" value="1"><label for="q21_1"><div class="btn">1</div><div class="lbl-txt">Zdecydowanie nie</div></label>
+        <input type="radio" name="q21" id="q21_2" value="2"><label for="q21_2"><div class="btn">2</div><div class="lbl-txt">Raczej nie</div></label>
+        <input type="radio" name="q21" id="q21_3" value="3"><label for="q21_3"><div class="btn">3</div><div class="lbl-txt">Trudno powiedzieć</div></label>
+        <input type="radio" name="q21" id="q21_4" value="4"><label for="q21_4"><div class="btn">4</div><div class="lbl-txt">Raczej tak</div></label>
+        <input type="radio" name="q21" id="q21_5" value="5"><label for="q21_5"><div class="btn">5</div><div class="lbl-txt">Zdecydowanie tak</div></label>
+      </div>
+    </div>
+
+    <!-- 22 R -->
+    <div class="statement-card" id="card-22" data-color="R">
+      <div class="statement-number">22 / 32</div>
+      <div class="statement-text">Kiedy projekt się dłuży bez widocznych postępów, czuję wyraźną frustrację.</div>
+      <div class="likert">
+        <input type="radio" name="q22" id="q22_1" value="1"><label for="q22_1"><div class="btn">1</div><div class="lbl-txt">Zdecydowanie nie</div></label>
+        <input type="radio" name="q22" id="q22_2" value="2"><label for="q22_2"><div class="btn">2</div><div class="lbl-txt">Raczej nie</div></label>
+        <input type="radio" name="q22" id="q22_3" value="3"><label for="q22_3"><div class="btn">3</div><div class="lbl-txt">Trudno powiedzieć</div></label>
+        <input type="radio" name="q22" id="q22_4" value="4"><label for="q22_4"><div class="btn">4</div><div class="lbl-txt">Raczej tak</div></label>
+        <input type="radio" name="q22" id="q22_5" value="5"><label for="q22_5"><div class="btn">5</div><div class="lbl-txt">Zdecydowanie tak</div></label>
+      </div>
+    </div>
+
+    <!-- 23 B -->
+    <div class="statement-card" id="card-23" data-color="B">
+      <div class="statement-number">23 / 32</div>
+      <div class="statement-text">Oceniam rozwiązania chłodnym, obiektywnym okiem — nie daję się ponieść atmosferze spotkania.</div>
+      <div class="likert">
+        <input type="radio" name="q23" id="q23_1" value="1"><label for="q23_1"><div class="btn">1</div><div class="lbl-txt">Zdecydowanie nie</div></label>
+        <input type="radio" name="q23" id="q23_2" value="2"><label for="q23_2"><div class="btn">2</div><div class="lbl-txt">Raczej nie</div></label>
+        <input type="radio" name="q23" id="q23_3" value="3"><label for="q23_3"><div class="btn">3</div><div class="lbl-txt">Trudno powiedzieć</div></label>
+        <input type="radio" name="q23" id="q23_4" value="4"><label for="q23_4"><div class="btn">4</div><div class="lbl-txt">Raczej tak</div></label>
+        <input type="radio" name="q23" id="q23_5" value="5"><label for="q23_5"><div class="btn">5</div><div class="lbl-txt">Zdecydowanie tak</div></label>
+      </div>
+    </div>
+
+    <!-- 24 G -->
+    <div class="statement-card" id="card-24" data-color="G">
+      <div class="statement-number">24 / 32</div>
+      <div class="statement-text">Zależy mi, by każdy w grupie czuł się wysłuchany i doceniony — nie tylko głos najgłośniejszych.</div>
+      <div class="likert">
+        <input type="radio" name="q24" id="q24_1" value="1"><label for="q24_1"><div class="btn">1</div><div class="lbl-txt">Zdecydowanie nie</div></label>
+        <input type="radio" name="q24" id="q24_2" value="2"><label for="q24_2"><div class="btn">2</div><div class="lbl-txt">Raczej nie</div></label>
+        <input type="radio" name="q24" id="q24_3" value="3"><label for="q24_3"><div class="btn">3</div><div class="lbl-txt">Trudno powiedzieć</div></label>
+        <input type="radio" name="q24" id="q24_4" value="4"><label for="q24_4"><div class="btn">4</div><div class="lbl-txt">Raczej tak</div></label>
+        <input type="radio" name="q24" id="q24_5" value="5"><label for="q24_5"><div class="btn">5</div><div class="lbl-txt">Zdecydowanie tak</div></label>
+      </div>
+    </div>
+
+    <div class="section-title">Część IV — Wartości i motywacja</div>
+
+    <!-- 25 B -->
+    <div class="statement-card" id="card-25" data-color="B">
+      <div class="statement-number">25 / 32</div>
+      <div class="statement-text">Wysoka jakość i dokładność wykonania są dla mnie ważniejsze niż szybkość dostarczenia efektu.</div>
+      <div class="likert">
+        <input type="radio" name="q25" id="q25_1" value="1"><label for="q25_1"><div class="btn">1</div><div class="lbl-txt">Zdecydowanie nie</div></label>
+        <input type="radio" name="q25" id="q25_2" value="2"><label for="q25_2"><div class="btn">2</div><div class="lbl-txt">Raczej nie</div></label>
+        <input type="radio" name="q25" id="q25_3" value="3"><label for="q25_3"><div class="btn">3</div><div class="lbl-txt">Trudno powiedzieć</div></label>
+        <input type="radio" name="q25" id="q25_4" value="4"><label for="q25_4"><div class="btn">4</div><div class="lbl-txt">Raczej tak</div></label>
+        <input type="radio" name="q25" id="q25_5" value="5"><label for="q25_5"><div class="btn">5</div><div class="lbl-txt">Zdecydowanie tak</div></label>
+      </div>
+    </div>
+
+    <!-- 26 R -->
+    <div class="statement-card" id="card-26" data-color="R">
+      <div class="statement-number">26 / 32</div>
+      <div class="statement-text">Lubię rywalizację — mobilizuje mnie do osiągania lepszych wyników niż zwykle.</div>
+      <div class="likert">
+        <input type="radio" name="q26" id="q26_1" value="1"><label for="q26_1"><div class="btn">1</div><div class="lbl-txt">Zdecydowanie nie</div></label>
+        <input type="radio" name="q26" id="q26_2" value="2"><label for="q26_2"><div class="btn">2</div><div class="lbl-txt">Raczej nie</div></label>
+        <input type="radio" name="q26" id="q26_3" value="3"><label for="q26_3"><div class="btn">3</div><div class="lbl-txt">Trudno powiedzieć</div></label>
+        <input type="radio" name="q26" id="q26_4" value="4"><label for="q26_4"><div class="btn">4</div><div class="lbl-txt">Raczej tak</div></label>
+        <input type="radio" name="q26" id="q26_5" value="5"><label for="q26_5"><div class="btn">5</div><div class="lbl-txt">Zdecydowanie tak</div></label>
+      </div>
+    </div>
+
+    <!-- 27 Y -->
+    <div class="statement-card" id="card-27" data-color="Y">
+      <div class="statement-number">27 / 32</div>
+      <div class="statement-text">Wizja i możliwości przyszłości bardziej mnie ekscytują niż szczegóły bieżącej realizacji.</div>
+      <div class="likert">
+        <input type="radio" name="q27" id="q27_1" value="1"><label for="q27_1"><div class="btn">1</div><div class="lbl-txt">Zdecydowanie nie</div></label>
+        <input type="radio" name="q27" id="q27_2" value="2"><label for="q27_2"><div class="btn">2</div><div class="lbl-txt">Raczej nie</div></label>
+        <input type="radio" name="q27" id="q27_3" value="3"><label for="q27_3"><div class="btn">3</div><div class="lbl-txt">Trudno powiedzieć</div></label>
+        <input type="radio" name="q27" id="q27_4" value="4"><label for="q27_4"><div class="btn">4</div><div class="lbl-txt">Raczej tak</div></label>
+        <input type="radio" name="q27" id="q27_5" value="5"><label for="q27_5"><div class="btn">5</div><div class="lbl-txt">Zdecydowanie tak</div></label>
+      </div>
+    </div>
+
+    <!-- 28 G -->
+    <div class="statement-card" id="card-28" data-color="G">
+      <div class="statement-number">28 / 32</div>
+      <div class="statement-text">Szczerze martwię się o dobrostan ludzi, z którymi pracuję — nie jest mi obojętne, jak się czują.</div>
+      <div class="likert">
+        <input type="radio" name="q28" id="q28_1" value="1"><label for="q28_1"><div class="btn">1</div><div class="lbl-txt">Zdecydowanie nie</div></label>
+        <input type="radio" name="q28" id="q28_2" value="2"><label for="q28_2"><div class="btn">2</div><div class="lbl-txt">Raczej nie</div></label>
+        <input type="radio" name="q28" id="q28_3" value="3"><label for="q28_3"><div class="btn">3</div><div class="lbl-txt">Trudno powiedzieć</div></label>
+        <input type="radio" name="q28" id="q28_4" value="4"><label for="q28_4"><div class="btn">4</div><div class="lbl-txt">Raczej tak</div></label>
+        <input type="radio" name="q28" id="q28_5" value="5"><label for="q28_5"><div class="btn">5</div><div class="lbl-txt">Zdecydowanie tak</div></label>
+      </div>
+    </div>
+
+    <!-- 29 B -->
+    <div class="statement-card" id="card-29" data-color="B">
+      <div class="statement-number">29 / 32</div>
+      <div class="statement-text">Zanim zaangażuję się w nowy projekt, potrzebuję zrozumieć jego cel, zakres i ryzyko.</div>
+      <div class="likert">
+        <input type="radio" name="q29" id="q29_1" value="1"><label for="q29_1"><div class="btn">1</div><div class="lbl-txt">Zdecydowanie nie</div></label>
+        <input type="radio" name="q29" id="q29_2" value="2"><label for="q29_2"><div class="btn">2</div><div class="lbl-txt">Raczej nie</div></label>
+        <input type="radio" name="q29" id="q29_3" value="3"><label for="q29_3"><div class="btn">3</div><div class="lbl-txt">Trudno powiedzieć</div></label>
+        <input type="radio" name="q29" id="q29_4" value="4"><label for="q29_4"><div class="btn">4</div><div class="lbl-txt">Raczej tak</div></label>
+        <input type="radio" name="q29" id="q29_5" value="5"><label for="q29_5"><div class="btn">5</div><div class="lbl-txt">Zdecydowanie tak</div></label>
+      </div>
+    </div>
+
+    <!-- 30 Y -->
+    <div class="statement-card" id="card-30" data-color="Y">
+      <div class="statement-number">30 / 32</div>
+      <div class="statement-text">Bardziej cenię możliwości i eksperymenty niż stabilność i pewność tego, co znane.</div>
+      <div class="likert">
+        <input type="radio" name="q30" id="q30_1" value="1"><label for="q30_1"><div class="btn">1</div><div class="lbl-txt">Zdecydowanie nie</div></label>
+        <input type="radio" name="q30" id="q30_2" value="2"><label for="q30_2"><div class="btn">2</div><div class="lbl-txt">Raczej nie</div></label>
+        <input type="radio" name="q30" id="q30_3" value="3"><label for="q30_3"><div class="btn">3</div><div class="lbl-txt">Trudno powiedzieć</div></label>
+        <input type="radio" name="q30" id="q30_4" value="4"><label for="q30_4"><div class="btn">4</div><div class="lbl-txt">Raczej tak</div></label>
+        <input type="radio" name="q30" id="q30_5" value="5"><label for="q30_5"><div class="btn">5</div><div class="lbl-txt">Zdecydowanie tak</div></label>
+      </div>
+    </div>
+
+    <!-- 31 R -->
+    <div class="statement-card" id="card-31" data-color="R">
+      <div class="statement-number">31 / 32</div>
+      <div class="statement-text">Zwykle to ja nadaję tempo i kierunek w grupowych projektach.</div>
+      <div class="likert">
+        <input type="radio" name="q31" id="q31_1" value="1"><label for="q31_1"><div class="btn">1</div><div class="lbl-txt">Zdecydowanie nie</div></label>
+        <input type="radio" name="q31" id="q31_2" value="2"><label for="q31_2"><div class="btn">2</div><div class="lbl-txt">Raczej nie</div></label>
+        <input type="radio" name="q31" id="q31_3" value="3"><label for="q31_3"><div class="btn">3</div><div class="lbl-txt">Trudno powiedzieć</div></label>
+        <input type="radio" name="q31" id="q31_4" value="4"><label for="q31_4"><div class="btn">4</div><div class="lbl-txt">Raczej tak</div></label>
+        <input type="radio" name="q31" id="q31_5" value="5"><label for="q31_5"><div class="btn">5</div><div class="lbl-txt">Zdecydowanie tak</div></label>
+      </div>
+    </div>
+
+    <!-- 32 G -->
+    <div class="statement-card" id="card-32" data-color="G">
+      <div class="statement-number">32 / 32</div>
+      <div class="statement-text">Ważne jest dla mnie, by podejmowane decyzje były sprawiedliwe i uwzględniały interesy wszystkich stron.</div>
+      <div class="likert">
+        <input type="radio" name="q32" id="q32_1" value="1"><label for="q32_1"><div class="btn">1</div><div class="lbl-txt">Zdecydowanie nie</div></label>
+        <input type="radio" name="q32" id="q32_2" value="2"><label for="q32_2"><div class="btn">2</div><div class="lbl-txt">Raczej nie</div></label>
+        <input type="radio" name="q32" id="q32_3" value="3"><label for="q32_3"><div class="btn">3</div><div class="lbl-txt">Trudno powiedzieć</div></label>
+        <input type="radio" name="q32" id="q32_4" value="4"><label for="q32_4"><div class="btn">4</div><div class="lbl-txt">Raczej tak</div></label>
+        <input type="radio" name="q32" id="q32_5" value="5"><label for="q32_5"><div class="btn">5</div><div class="lbl-txt">Zdecydowanie tak</div></label>
+      </div>
+    </div>
+
+  </form>
+</div>
+
+<!-- SUBMIT -->
+<div class="submit-wrap">
+  <p class="submit-note">Upewnij się, że odpowiedziałeś na wszystkie twierdzenia przed obliczeniem profilu.</p>
+  <button class="btn-submit" id="submitBtn" onclick="calculateResults()" disabled>
+    Oblicz mój profil kolorów
+  </button>
+  <p class="answer-count" id="answerCount"><strong>0</strong> / 32 odpowiedzi</p>
+</div>
+
+<!-- RESULTS -->
+<div id="results"></div>
+
+<script>
+// ── DATA ──────────────────────────────────────────────────────────────────────
+
+const COLOR_META = {
+  R: { name: 'Czerwony',  hex: '#C0392B', light: '#FAE9E7', label: 'Fiery Red'      },
+  Y: { name: 'Żółty',    hex: '#D4A017', light: '#FDF6E3', label: 'Sunshine Yellow' },
+  G: { name: 'Zielony',  hex: '#27704A', light: '#E6F4EC', label: 'Earth Green'    },
+  B: { name: 'Niebieski',hex: '#1A4A7A', light: '#E7EEF8', label: 'Cool Blue'       },
+};
+
+// question → color mapping
+const Q_COLOR = {
+  q1:'R', q2:'B', q3:'Y', q4:'G', q5:'R', q6:'B', q7:'G', q8:'Y',
+  q9:'R', q10:'B', q11:'Y', q12:'G', q13:'R', q14:'B', q15:'Y', q16:'G',
+  q17:'Y', q18:'R', q19:'B', q20:'G', q21:'Y', q22:'R', q23:'B', q24:'G',
+  q25:'B', q26:'R', q27:'Y', q28:'G', q29:'B', q30:'Y', q31:'R', q32:'G'
+};
+
+// ── 16 COMPOSITE PROFILES ────────────────────────────────────────────────────
+const PROFILES = {
+  'R-Y': {
+    name: 'Czerwono-Żółty',
+    tagline: 'Dynamiczny Inspirator',
+    gradient: 'linear-gradient(135deg, #C0392B 0%, #D4A017 100%)',
+    description: `Łączysz energię działania z naturalnym talentem do angażowania ludzi. Jesteś osobą, która nie tylko wyznacza ambitne cele, ale potrafi pociągnąć za sobą innych — entuzjastycznie i bezkompromisowo. Twoja siła to tempo i zdolność do szybkiego przekształcania pomysłów w inicjatywy.
+
+Szybko widzisz, co jest możliwe, i natychmiast chcesz to realizować. Jesteś towarzyski, otwarty na zmiany i masz naturalny instynkt przywódczy. Możesz jednak przeceniać możliwości — zarówno własne, jak i innych — i tracić zainteresowanie, gdy projekt wchodzi w fazę żmudnej realizacji.`,
+    strengths: ['Charyzma i zdolność inspirowania', 'Wysoka energia i inicjatywa', 'Odwaga w podejmowaniu ryzyka', 'Szybkie podejmowanie decyzji', 'Entuzjazm zaraźliwy dla otoczenia'],
+    challenges: ['Niecierpliwość wobec procedur', 'Tendencja do przeskakiwania między projektami', 'Pomijanie szczegółów i ryzyk', 'Zbyt optymistyczne szacowanie czasu i zasobów'],
+    at_best: 'Wizjonerski lider, który "sprzedaje" ideę i jednocześnie ją realizuje z niezwykłą energią.',
+    under_stress: 'Staje się impulsywny, dominujący i może ignorować opinie innych.',
+    motivation: 'Wyzwania, nowe projekty, wolność działania, uznanie, możliwość wpływu.',
+    communication: 'Mów bezpośrednio, konkretnie i z wyraźną korzyścią. Unikaj długich raportów — wolisz executive summary.',
+  },
+  'R-B': {
+    name: 'Czerwono-Niebieski',
+    tagline: 'Precyzyjny Lider',
+    gradient: 'linear-gradient(135deg, #C0392B 0%, #1A4A7A 100%)',
+    description: `Łączysz zdecydowanie z analityczną dyscypliną. To rzadkie połączenie — działasz szybko, ale nie pochopnie. Decyzje podejmujesz po błyskawicznej, trafnej ocenie faktów. Cenisz wyniki i jakość jednocześnie.
+
+Twoje środowisko pracy to jedno: zadania muszą być wykonane dobrze i na czas. Masz wysokie wymagania wobec siebie i innych. Potrafisz chłodno ocenić sytuację i zareagować bez emocjonalnych zakłóceń, co czyni Cię skutecznym w środowiskach wysokiego ryzyka.`,
+    strengths: ['Łączenie szybkości działania z precyzją', 'Obiektywna ocena sytuacji', 'Skuteczność pod presją', 'Wysoka samodyscyplina', 'Nastawienie na wyniki z zachowaniem standardów'],
+    challenges: ['Niska tolerancja na błędy innych', 'Może być postrzegany jako zimny lub autorytarny', 'Trudność w delegowaniu', 'Brak cierpliwości do procesu grupowego'],
+    at_best: 'Wyjątkowo skuteczny menedżer lub ekspert — dostarcza wyniki i pilnuje jakości.',
+    under_stress: 'Staje się nadkrytyczny, mikromanager, może izolować się od zespołu.',
+    motivation: 'Trudne problemy do rozwiązania, mierzalne cele, jasne standardy, autonomia.',
+    communication: 'Oczekuje faktów, danych i jasno postawionych celów. Nie znosi marnowania czasu.',
+  },
+  'R-G': {
+    name: 'Czerwono-Zielony',
+    tagline: 'Zaangażowany Sprawca',
+    gradient: 'linear-gradient(135deg, #C0392B 0%, #27704A 100%)',
+    description: `Łączysz orientację na rezultaty z głęboką troską o ludzi. Chcesz osiągać cele, ale robić to razem — budując coś trwałego, a nie tylko szybkiego. Potrafisz działać zdecydowanie, gdy sytuacja tego wymaga, choć zależy Ci też na tym, by droga do celu nie niszczyła relacji.
+
+To napięcie między imperatywem działania a potrzebą zgody sprawia, że jesteś naturalnie wrażliwym liderem — rozumiesz, że wyniki tworzy się przez ludzi, nie wbrew nim.`,
+    strengths: ['Orientacja na ludzi i wyniki jednocześnie', 'Lojalność i zaangażowanie', 'Praktyczny empata — słucha i działa', 'Skuteczny w budowaniu zespołów zorientowanych na cel'],
+    challenges: ['Wewnętrzny konflikt między szybkością a zgodą grupy', 'Trudność w podejmowaniu decyzji niekorzystnych dla ludzi', 'Może blokować trudne, ale konieczne zmiany'],
+    at_best: 'Lider, który osiąga wyniki nie paląc mostów — buduje kulturę wysokiej skuteczności i zaufania.',
+    under_stress: 'Przeciąga decyzje, szuka konsensusu tam, gdzie potrzeba stanowczości.',
+    motivation: 'Widoczny wpływ na ludzi i organizację, poczucie wspólnoty w działaniu.',
+    communication: 'Ceni bezpośredniość, ale z szacunkiem. Nie reaguje dobrze na chłodny, bezosobowy przekaz.',
+  },
+  'Y-R': {
+    name: 'Żółto-Czerwony',
+    tagline: 'Spontaniczny Inicjator',
+    gradient: 'linear-gradient(135deg, #D4A017 0%, #C0392B 100%)',
+    description: `Działasz szybko i z radością. Pomysły rodzą się u Ciebie nieustannie, a chęć ich natychmiastowej realizacji sprawia, że bywasz katalizatorem zmiany w każdym środowisku. Jesteś naturalnym networkerem — otwartym, ciepłym i magnetycznym.
+
+Twoja siła to zdolność do mobilizowania ludzi wokół nowych idei i nadawania impulsu tam, gdzie panuje stagnacja. Możesz jednak gubić się w nadmiarze własnych inicjatyw i mieć trudność z domykaniem tego, co zaczęło.`,
+    strengths: ['Kreatywność i innowacyjność', 'Wysoka energia społeczna', 'Entuzjazm i motywowanie innych', 'Szybkie adaptowanie się do zmian', 'Naturalny talent do networkingu'],
+    challenges: ['Brak konsekwencji w realizacji', 'Zbyt wiele pomysłów, za mało skupienia', 'Impulsywność w działaniu i komunikacji', 'Opór wobec rutyny i procedur'],
+    at_best: 'Niepohamowany generatorem energii i pomysłów — tam, gdzie trzeba "ruszyć z miejsca".',
+    under_stress: 'Staje się chaotyczny, zdominowany przez reakcje emocjonalne, traci priorytetyzację.',
+    motivation: 'Nowość, swoboda, uznanie, kontakty z ludźmi, możliwość wyrażania siebie.',
+    communication: 'Odpowiada na energię i entuzjazm. Zniechęca się wobec formalizmów i negatywizmu.',
+  },
+  'Y-G': {
+    name: 'Żółto-Zielony',
+    tagline: 'Empatyczny Animator',
+    gradient: 'linear-gradient(135deg, #D4A017 0%, #27704A 100%)',
+    description: `Jesteś naturalnie towarzyski, ciepły i troskliwy. Twoja obecność w grupie podnosi jej energię i spójność — potrafisz zarówno rozśmieszyć, jak i wesprzeć. Relacje są dla Ciebie centrum aktywności zawodowej i osobistej.
+
+Budujesz środowiska, gdzie ludzie czują się bezpiecznie i chętnie współpracują. Rzadko konfrontujesz się wprost — wolisz wypracować harmonię. Twoja słabość to tendencja do unikania trudnych rozmów i wycofywania się przed wyraźnym stanowiskiem.`,
+    strengths: ['Empatia i uważność na emocje', 'Tworzenie dobrej atmosfery w grupie', 'Kreatywność w służbie ludziom', 'Zdolność do jednoczenia różnych typów osobowości'],
+    challenges: ['Unikanie konfrontacji kosztem wyników', 'Trudność w stawianiu granic', 'Zbyt duże skupienie na procesie i harmonii', 'Wycofywanie się przy silnych dominujących postawach'],
+    at_best: 'Buduje kultury współpracy, gdzie innowacja idzie w parze z troską.',
+    under_stress: 'Wycofuje się, traci pewność siebie, może stać się nadmiernie uległy.',
+    motivation: 'Harmonia w grupie, możliwość pomagania, twórcza atmosfera, akceptacja.',
+    communication: 'Ważny jest ton i relacja. Źle reaguje na agresję, pośpiech i brak empatii.',
+  },
+  'Y-B': {
+    name: 'Żółto-Niebieski',
+    tagline: 'Kreatywny Strateg',
+    gradient: 'linear-gradient(135deg, #D4A017 0%, #1A4A7A 100%)',
+    description: `To rzadkie i ciekawe połączenie ekstrawersji ze skłonnością do analitycznego myślenia. Generujesz pomysły i potrafisz je weryfikować. Tam gdzie inni "żółci" pędzą bez sprawdzenia gruntu, Ty zatrzymujesz się i pytasz: "Ale czy to ma sens?"
+
+Możesz być niezwykle skutecznym innowatorem — łączysz wizję z rygorem. Napięcie między tymi dwoma energiami może jednak prowadzić do wewnętrznych wahań: raz pragniesz działać spontanicznie, innym razem analizujesz zamiast ruszyć do przodu.`,
+    strengths: ['Pomysłowość z analitycznym zapleczem', 'Łączenie wizji ze szczegółem', 'Krytyczne myślenie twórcze', 'Skuteczna komunikacja złożonych idei'],
+    challenges: ['Wewnętrzne napięcie między impulsem a analizą', 'Może być niespójny w podejściu', 'Trudność z ustaleniem priorytetów'],
+    at_best: 'Doskonały w innowacjach wymagających zarówno pomysłu, jak i solidnej weryfikacji.',
+    under_stress: 'Paraliż analityczny lub odwrotnie — pochopne działanie bez weryfikacji.',
+    motivation: 'Złożone problemy, możliwość eksperymentowania w kontrolowanych warunkach.',
+    communication: 'Lubi dyskusje, zadaje dużo pytań. Ceni merytoryczne argumenty podane z entuzjazmem.',
+  },
+  'G-Y': {
+    name: 'Zielono-Żółty',
+    tagline: 'Harmonijny Facylitator',
+    gradient: 'linear-gradient(135deg, #27704A 0%, #D4A017 100%)',
+    description: `Jesteś ciepły, otwarty i zorientowany na ludzi — zarówno na ich dobre samopoczucie, jak i na radość ze wspólnego działania. Budujesz relacje z autentyczną troską i potrafisz łączyć grupę wokół wspólnych wartości.
+
+Twoja rola naturalna to "klej" organizacyjny — trzymasz ludzi razem, tworzysz przestrzeń do otwartej komunikacji i rozwiązujesz napięcia zanim staną się konfliktem. Unikasz jednak konfrontacji, co może hamować konieczne trudne decyzje.`,
+    strengths: ['Budowanie spójności grupowej', 'Empatia i aktywne słuchanie', 'Mediacja i łagodzenie napięć', 'Tworzenie otwartej kultury komunikacji'],
+    challenges: ['Unikanie trudnych decyzji', 'Zbyt duże uzależnienie od harmonii grupy', 'Trudność z egzekwowaniem standardów'],
+    at_best: 'Facylitator i mediator — tam, gdzie liczy się spójność i zaufanie.',
+    under_stress: 'Przyjmuje postawę ugrzecznienia, unika tematu konfliktu kosztem wyników.',
+    motivation: 'Harmonia, relacje, wspólne cele, atmosfera wzajemnego wsparcia.',
+    communication: 'Reaguje na ciepło i otwartość. Unika środowisk, gdzie dominuje rywalizacja.',
+  },
+  'G-B': {
+    name: 'Zielono-Niebieski',
+    tagline: 'Rzetelny Opiekun',
+    gradient: 'linear-gradient(135deg, #27704A 0%, #1A4A7A 100%)',
+    description: `Łączysz autentyczną troskę o ludzi z potrzebą porządku i precyzji. Jesteś osobą, na której można polegać — dotrzymujesz słowa, pilnujesz jakości i nigdy nie lekceważysz potrzeb innych.
+
+Twoje środowisko pracy musi być przewidywalne i etyczne. Nietolerancja wobec chaosu i nieuczciwości to Twoja cecha rozpoznawcza. Możesz jednak mieć trudności z adaptacją w środowiskach, które wymagają szybkich zmian i ryzyka.`,
+    strengths: ['Wysokie standardy etyczne i zawodowe', 'Rzetelność i konsekwencja', 'Troska o innych połączona z dyscypliną', 'Zdolność do systematycznej pracy'],
+    challenges: ['Opór wobec nagłych zmian', 'Może być postrzegany jako zbyt ostrożny', 'Trudność w pracy z chaotycznymi osobami'],
+    at_best: 'Niezawodny ekspert lub opiekun procesu — gwarantuje jakość i ciągłość.',
+    under_stress: 'Wycofuje się, staje się nadmiernie ostrożny lub wręcz blokuje działanie.',
+    motivation: 'Stabilność, jasne standardy, dobra atmosfera, możliwość pomagania.',
+    communication: 'Ceni spokój, logikę i szacunek. Nie reaguje dobrze na impulsywność i niekonsekwencję.',
+  },
+  'G-R': {
+    name: 'Zielono-Czerwony',
+    tagline: 'Empatyczny Realizator',
+    gradient: 'linear-gradient(135deg, #27704A 0%, #C0392B 100%)',
+    description: `Masz naturalne napięcie między troską a decyzyjnością. Chcesz, by ludzie czuli się dobrze — ale wiesz też, że dobra wola bez efektów nic nie znaczy. W dojrzałej formie łączysz te energie: działasz z determinacją, ale nie kosztem relacji.
+
+Twoja wartość w zespole to zdolność do trudnych rozmów przeprowadzanych z szacunkiem. Potrafisz powiedzieć "nie" bez niszczenia relacji. To rzadka i cenna kompetencja.`,
+    strengths: ['Troska z egzekucją — rzadkie połączenie', 'Konstruktywna konfrontacja', 'Budowanie lojalnych, skutecznych zespołów', 'Odwaga połączona z empatią'],
+    challenges: ['Wewnętrzny konflikt przy decyzjach personalnych', 'Może przeciągać trudne rozmowy', 'Czasem zbyt ostrożny w działaniu'],
+    at_best: 'Menedżer, który osiąga wyniki nie tracąc zaufania ludzi.',
+    under_stress: 'Szuka konsensusu tam, gdzie potrzeba decyzji. Może unikać konfliktu.',
+    motivation: 'Poczucie, że robi różnicę — zarówno dla wyników, jak i dla ludzi.',
+    communication: 'Bezpośredni, ale ludzki. Docenia, gdy inni też łączą szczerość z szacunkiem.',
+  },
+  'B-R': {
+    name: 'Niebiesko-Czerwony',
+    tagline: 'Analityczny Decydent',
+    gradient: 'linear-gradient(135deg, #1A4A7A 0%, #C0392B 100%)',
+    description: `Twoja siła to zdolność do podejmowania trafnych, szybkich decyzji opartych na danych. Nie działasz pochopnie — ale gdy masz wystarczającą informację, działasz zdecydowanie. Jesteś naturalnym autorytetem w środowiskach, gdzie liczy się kompetencja i wyniki.
+
+Możesz być odbierany jako chłodny i wymagający. Trudno Ci z osobami, które działają impulsywnie lub niedbale. Twoje standardy są wysokie — i oczekujesz podobnego poziomu od innych.`,
+    strengths: ['Trafna analiza i szybkie wnioskowanie', 'Skuteczność w trudnych warunkach', 'Wysokie standardy jakości i wyników', 'Niezależność sądu'],
+    challenges: ['Nietolerancja wobec niekompetencji', 'Może być zbyt krytyczny', 'Trudność w budowaniu ciepłych relacji', 'Tendencja do perfekcjonizmu'],
+    at_best: 'Ekspert lub decydent w sytuacjach wymagających trafnej, szybkiej oceny.',
+    under_stress: 'Izoluje się, staje się nadkrytyczny, może blokować decyzje nadmierną analizą.',
+    motivation: 'Trudne problemy, wysoka stawka, możliwość stosowania ekspertyzy.',
+    communication: 'Mów do rzeczy, miej dane, nie marnuj jego czasu.',
+  },
+  'B-Y': {
+    name: 'Niebiesko-Żółty',
+    tagline: 'Innowacyjny Analityk',
+    gradient: 'linear-gradient(135deg, #1A4A7A 0%, #D4A017 100%)',
+    description: `Łączysz analityczną rzetelność z kreatywnością i otwartością na nowe idee. Jesteś osobą, która nie tylko generuje innowacyjne rozwiązania, ale potrafi je też gruntownie przemyśleć. Twój umysł działa na styku systemu i wyobraźni.
+
+W środowiskach badawczych, projektowych i strategicznych czujesz się jak ryba w wodzie. Możesz mieć trudności z podejmowaniem decyzji — zawsze jest jeszcze jedna analiza do przeprowadzenia, jeszcze jedna możliwość do sprawdzenia.`,
+    strengths: ['Twórcze myślenie systemowe', 'Umiejętność łączenia idei z danymi', 'Otwartość na perspektywy', 'Skuteczna komunikacja złożonych treści'],
+    challenges: ['Paraliż analityczny', 'Trudność z domykaniem projektów', 'Zbyt wiele opcji do rozważenia'],
+    at_best: 'Doskonały w R&D, strategii i projektowaniu systemów.',
+    under_stress: 'Przeanalizowuje zamiast działać lub wręcz odwrotnie — ucieka w entuzjazm bez osnowy.',
+    motivation: 'Eksploracja, złożone zagadnienia, środowiska otwarte na eksperyment.',
+    communication: 'Ceni merytoryczną głębię i otwartość na dyskusję.',
+  },
+  'B-G': {
+    name: 'Niebiesko-Zielony',
+    tagline: 'Systematyczny Opiekun',
+    gradient: 'linear-gradient(135deg, #1A4A7A 0%, #27704A 100%)',
+    description: `Jesteś osobą, która łączy dbałość o jakość z głęboką troską o ludzi. Twoje środowisko pracy powinno być stabilne, etyczne i przewidywalne. Zarówno błędy w procesach, jak i nieszczęśliwi ludzie — obydwa budzą Twój niepokój.
+
+Jesteś niezwykle wartościowy w środowiskach, gdzie liczy się zarówno merytoryczna rzetelność, jak i klimat zaufania. Możesz jednak być zbyt ostrożny w sytuacjach wymagających szybkiego działania lub ryzyka.`,
+    strengths: ['Głęboka rzetelność i troska', 'Budowanie zaufania przez kompetencje', 'Praca z najwyższą etyką zawodową', 'Systematyczność i cierpliwość'],
+    challenges: ['Nadmierna ostrożność', 'Trudność z adaptacją w chaosie', 'Może być zbyt powolny w działaniu'],
+    at_best: 'Niezawodny ekspert z ludzką twarzą — ceniony za kompetencje i etykę.',
+    under_stress: 'Wycofuje się, unika działania, może blokować postęp nadmierną analizą ryzyk.',
+    motivation: 'Stabilność, jasne standardy, troska o ludzi, praca z sensem.',
+    communication: 'Ceni spokój, logikę i ciepło. Odrzuca agresję i chaos.',
+  },
+  'R': {
+    name: 'Dominująco Czerwony',
+    tagline: 'Bezkompromisowy Lider Akcji',
+    gradient: 'linear-gradient(135deg, #C0392B 0%, #8b1a1a 100%)',
+    description: `Jesteś nastawiony wyłącznie na wyniki. Twoja energia i determinacja są bezkonkurencyjne — tam, gdzie inni się wahają, Ty już działasz. Jesteś naturalnym liderem w sytuacjach kryzysowych i wymagających szybkich, odważnych decyzji.
+
+Twoja dominująca czerwień oznacza, że rywalizacja, wyzwania i poczucie kontroli są Twoim paliwem. Możesz jednak być postrzegany jako dominujący lub niecierpliwy — szczególnie przez osoby o innym temperamencie.`,
+    strengths: ['Wyjątkowa determinacja i siła woli', 'Naturalny lider w sytuacjach kryzysowych', 'Wysoka skuteczność i orientacja na wyniki', 'Odwaga w podejmowaniu ryzyka'],
+    challenges: ['Niska tolerancja na opieszałość', 'Może dominować i tłumić innych', 'Impulsywność w trudnych sytuacjach', 'Trudność ze słuchaniem'],
+    at_best: 'Bezkompromisowy realizator — osiąga to, co dla innych wydaje się niemożliwe.',
+    under_stress: 'Staje się apodyktyczny, gwałtowny, traci zdolność do współpracy.',
+    motivation: 'Władza, wyniki, wyzwania, autonomia, rywalizacja.',
+    communication: 'Mów krótko, konkretnie, do rzeczy. Nie trać jego czasu.',
+  },
+  'Y': {
+    name: 'Dominująco Żółty',
+    tagline: 'Niezatrzymany Entuzjasta',
+    gradient: 'linear-gradient(135deg, #D4A017 0%, #a87808 100%)',
+    description: `Jesteś pełen energii, pomysłów i ciepła. Twoja obecność rozjaśnia każde środowisko — jesteś magnetyczny, towarzyski i nieskończenie optymistyczny. Ludzie chcą być blisko Ciebie, bo czują się przy Tobie bardziej żywi.
+
+Twoja dominująca żółć oznacza, że kontakty społeczne, ekspresja i nowość są Twoją siłą napędową. Możesz mieć jednak trudności z konsekwentną realizacją i skupieniem na detalach.`,
+    strengths: ['Charyzma i magnetyzm', 'Kreatywność i generowanie pomysłów', 'Zdolność do inspirowania i motywowania', 'Szybka adaptacja do zmian'],
+    challenges: ['Brak konsekwencji', 'Trudność z detalami i procedurami', 'Impulsywność i rozproszenie', 'Tendencja do przeceniania entuzjazmu'],
+    at_best: 'Katalizator zmiany i inspiracji — tam, gdzie trzeba "ożywić" środowisko.',
+    under_stress: 'Staje się chaotyczny, reaguje emocjonalnie, traci focus.',
+    motivation: 'Wolność, uznanie, nowość, kontakty z ludźmi, możliwość wyrażania siebie.',
+    communication: 'Odpowiada na energię i entuzjazm. Nudzą go szczegóły i procedury.',
+  },
+  'G': {
+    name: 'Dominująco Zielony',
+    tagline: 'Strażnik Harmonii',
+    gradient: 'linear-gradient(135deg, #27704A 0%, #145230 100%)',
+    description: `Jesteś ostoją stabilności i zaufania. Tam gdzie inni miotają się w zmianie, Ty jesteś tym, który trzyma grupę razem. Twoja lojalność, empatia i zdolność do słuchania są nieocenione — szczególnie w trudnych momentach dla organizacji.
+
+Twoja dominująca zieleń oznacza, że relacje i harmonia są fundamentem Twojego działania. Możesz jednak mieć trudność z wyrazistym stanowiskiem w sytuacjach wymagających konfrontacji.`,
+    strengths: ['Głęboka empatia i zdolność do słuchania', 'Lojalność i rzetelność', 'Budowanie trwałych relacji', 'Naturalny mediator'],
+    challenges: ['Unikanie konfrontacji', 'Nadmierna ustępliwość', 'Opór wobec nagłych zmian', 'Trudność z egzekwowaniem'],
+    at_best: 'Niezastąpiony "klej" zespołowy — łączy ludzi i buduje kulturę zaufania.',
+    under_stress: 'Wycofuje się, traci głos, może stać się pasywnie-agresywny.',
+    motivation: 'Stabilność, harmonia, poczucie przynależności, możliwość pomagania.',
+    communication: 'Ceni ciepło i szacunek. Źle reaguje na presję i agresję.',
+  },
+  'B': {
+    name: 'Dominująco Niebieski',
+    tagline: 'Mistrz Precyzji',
+    gradient: 'linear-gradient(135deg, #1A4A7A 0%, #0d2d4f 100%)',
+    description: `Jesteś analityczny, systematyczny i bezkompromisowy w kwestii jakości. Twoje decyzje są zawsze oparte na faktach — emocje i intuicja ustępują u Ciebie miejsca logice i weryfikowalnym danym. Jesteś autorytetem w środowiskach, gdzie liczy się wiedza i rzetelność.
+
+Twoja dominująca niebieskość oznacza, że jakość, porządek i precyzja są Twoim standardem — zarówno dla siebie, jak i dla innych. Możesz mieć trudności z szybkim działaniem w warunkach niepewności lub z elastyczną adaptacją do chaotycznych środowisk.`,
+    strengths: ['Analityczna głębokość i precyzja', 'Wysoka jakość pracy', 'Niezawodność i konsekwencja', 'Obiektywna ocena sytuacji'],
+    challenges: ['Paraliż analityczny', 'Nadkrytyczność wobec innych', 'Trudność z szybkimi decyzjami', 'Chłód w relacjach interpersonalnych'],
+    at_best: 'Ekspert i architekt systemów — gwarant jakości i rzetelności.',
+    under_stress: 'Analizuje bez końca, izoluje się, staje się nieprzejednanym krytykiem.',
+    motivation: 'Ekspertyza, jakość, jasne zasady, autonomia intelektualna.',
+    communication: 'Wymaga danych i logiki. Niecierpliwy wobec niemerytorycznych argumentów.',
+  },
+};
+
+// ── LOGIC ─────────────────────────────────────────────────────────────────────
+
+let answered = 0;
+const TOTAL = 32;
+
+function updateProgress() {
+  const pct = (answered / TOTAL) * 100;
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressLabel').textContent = answered + ' / ' + TOTAL;
+  document.getElementById('answerCount').innerHTML = '<strong>' + answered + '</strong> / 32 odpowiedzi';
+  document.getElementById('submitBtn').disabled = answered < TOTAL;
+}
+
+// Listen to all radio changes
+document.querySelectorAll('input[type=radio]').forEach(radio => {
+  radio.addEventListener('change', function() {
+    const name = this.name;
+    const cardId = 'card-' + name.replace('q','');
+    const card = document.getElementById(cardId);
+    const color = card.dataset.color;
+
+    // Check if this is newly answered
+    const wasAnswered = card.classList.contains('answered');
+    if (!wasAnswered) {
+      answered++;
+      updateProgress();
+    }
+    card.classList.add('answered');
+    card.classList.remove('color-R','color-Y','color-G','color-B');
+    card.classList.add('color-' + color);
+  });
+});
+
+function getScores() {
+  const scores = { R: 0, Y: 0, G: 0, B: 0 };
+  for (let i = 1; i <= 32; i++) {
+    const sel = document.querySelector(`input[name="q${i}"]:checked`);
+    if (sel) {
+      const color = Q_COLOR['q' + i];
+      scores[color] += parseInt(sel.value);
+    }
+  }
+  return scores;
+}
+
+function getProfileKey(scores) {
+  // Sort colors by score descending
+  const sorted = Object.entries(scores).sort((a,b) => b[1]-a[1]);
+  const primary = sorted[0][0];
+  const secondary = sorted[1][0];
+  const diff = sorted[0][1] - sorted[1][1];
+
+  // If dominant (diff > 6), use single color
+  if (diff > 6) return primary;
+
+  // Otherwise composite
+  const key = primary + '-' + secondary;
+  if (PROFILES[key]) return key;
+  // fallback
+  return primary;
+}
+
+function calculateResults() {
+  if (answered < TOTAL) return;
+
+  const scores = getScores();
+  const total = Object.values(scores).reduce((a,b) => a+b, 0);
+  const key = getProfileKey(scores);
+  const profile = PROFILES[key];
+
+  // Hide form area
+  document.querySelector('.form-wrap').style.display = 'none';
+  document.querySelector('.submit-wrap').style.display = 'none';
+  document.querySelector('.instructions').style.display = 'none';
+
+  // Build results HTML
+  const colors = ['R','Y','G','B'];
+  const pctMap = {};
+  colors.forEach(c => { pctMap[c] = Math.round((scores[c]/total)*100); });
+
+  const swatchHTML = key.split('-').map(c => `
+    <div class="swatch">
+      <div class="swatch-dot" style="background:${COLOR_META[c].hex}"></div>
+      <span>${COLOR_META[c].name} · ${COLOR_META[c].label}</span>
+    </div>
+  `).join('');
+
+  const barsHTML = colors.map(c => `
+    <div class="score-row">
+      <div class="score-color-label">
+        <div class="score-dot" style="background:${COLOR_META[c].hex}"></div>
+        <div class="score-color-name">${COLOR_META[c].name}</div>
+      </div>
+      <div class="score-bar-bg">
+        <div class="score-bar-fill" style="background:${COLOR_META[c].hex}; width:0%" data-pct="${pctMap[c]}"></div>
+      </div>
+      <div class="score-pct">${pctMap[c]}%</div>
+    </div>
+  `).join('');
+
+  const strengthsHTML = profile.strengths.map(s => `<div class="tag">+ ${s}</div>`).join('');
+  const challengesHTML = profile.challenges.map(s => `<div class="tag">△ ${s}</div>`).join('');
+
+  const paraHTML = profile.description.split('\n\n').map(p => `<p>${p}</p>`).join('');
+
+  const html = `
+    <div class="result-hero" style="background: var(--ink);">
+      <div class="result-eyebrow">Twój profil kolorów</div>
+      <div class="result-type-name">${profile.name}</div>
+      <div class="result-tagline">${profile.tagline}</div>
+      <div class="result-swatches">${swatchHTML}</div>
+    </div>
+
+    <div class="score-bars">
+      <h3>Rozkład energii kolorów</h3>
+      ${barsHTML}
+    </div>
+
+    <div class="profile-section">
+      <h3>Charakterystyka <span>Opis</span></h3>
+      ${paraHTML}
+    </div>
+
+    <div class="profile-section">
+      <h3>Mocne strony <span>Co wnosisz</span></h3>
+      <div class="tags-wrap">${strengthsHTML}</div>
+    </div>
+
+    <div class="profile-section">
+      <h3>Obszary rozwoju <span>Na co uważać</span></h3>
+      <div class="tags-wrap">${challengesHTML}</div>
+    </div>
+
+    <div class="profile-section">
+      <h3>W najlepszej formie i pod presją <span>Dynamika</span></h3>
+      <div class="two-col">
+        <div class="two-col-item"><strong>Kiedy jesteś w formie</strong>${profile.at_best}</div>
+        <div class="two-col-item"><strong>Pod presją / stres</strong>${profile.under_stress}</div>
+        <div class="two-col-item"><strong>Co Cię motywuje</strong>${profile.motivation}</div>
+        <div class="two-col-item"><strong>Jak z Tobą rozmawiać</strong>${profile.communication}</div>
+      </div>
+    </div>
+
+    <button class="retake-btn" onclick="location.reload()">↺ Wypełnij test ponownie</button>
+  `;
+
+  const resultsEl = document.getElementById('results');
+  resultsEl.innerHTML = html;
+  resultsEl.style.display = 'block';
+
+  resultsEl.scrollIntoView({ behavior: 'smooth' });
+
+  // Animate bars after paint
+  setTimeout(() => {
+    document.querySelectorAll('.score-bar-fill').forEach(bar => {
+      bar.style.width = bar.dataset.pct + '%';
+    });
+  }, 300);
+}
+</script>
+</body>
+</html>
